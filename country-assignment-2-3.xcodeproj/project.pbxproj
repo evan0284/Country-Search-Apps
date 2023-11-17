@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01A76C242B06EE8000DB2922 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 01A76C232B06EE8000DB2922 /* SwiftUICharts */; };
 		01B9F55D2B015400007EA85A /* country_assignment_2_3App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B9F55C2B015400007EA85A /* country_assignment_2_3App.swift */; };
 		01B9F55F2B015400007EA85A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B9F55E2B015400007EA85A /* ContentView.swift */; };
 		01B9F5612B015402007EA85A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01B9F5602B015402007EA85A /* Assets.xcassets */; };
@@ -14,6 +15,14 @@
 		01B9F56E2B015402007EA85A /* country_assignment_2_3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B9F56D2B015402007EA85A /* country_assignment_2_3Tests.swift */; };
 		01B9F5782B015402007EA85A /* country_assignment_2_3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B9F5772B015402007EA85A /* country_assignment_2_3UITests.swift */; };
 		01B9F57A2B015402007EA85A /* country_assignment_2_3UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B9F5792B015402007EA85A /* country_assignment_2_3UITestsLaunchTests.swift */; };
+		01B9F5882B0171E4007EA85A /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 01B9F5872B0171E4007EA85A /* SwiftUIIntrospect */; };
+		01B9F58A2B0171E4007EA85A /* SwiftUIIntrospect-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 01B9F5892B0171E4007EA85A /* SwiftUIIntrospect-Dynamic */; };
+		01B9F58C2B0171E4007EA85A /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 01B9F58B2B0171E4007EA85A /* SwiftUIIntrospect-Static */; };
+		01F5C4D52B03F42E009296F1 /* SwiftSVG in Frameworks */ = {isa = PBXBuildFile; productRef = 01F5C4D42B03F42E009296F1 /* SwiftSVG */; };
+		01F5C4DA2B040271009296F1 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 01F5C4D92B040271009296F1 /* SVGKit */; };
+		01F5C4DC2B040271009296F1 /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 01F5C4DB2B040271009296F1 /* SVGKitSwift */; };
+		01F5C4DE2B046A2D009296F1 /* FlagImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F5C4DD2B046A2D009296F1 /* FlagImage.swift */; };
+		01F5C4E02B047717009296F1 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F5C4DF2B047717009296F1 /* SearchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +53,8 @@
 		01B9F5732B015402007EA85A /* country-assignment-2-3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "country-assignment-2-3UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01B9F5772B015402007EA85A /* country_assignment_2_3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = country_assignment_2_3UITests.swift; sourceTree = "<group>"; };
 		01B9F5792B015402007EA85A /* country_assignment_2_3UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = country_assignment_2_3UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		01F5C4DD2B046A2D009296F1 /* FlagImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagImage.swift; sourceTree = "<group>"; };
+		01F5C4DF2B047717009296F1 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +62,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01F5C4DC2B040271009296F1 /* SVGKitSwift in Frameworks */,
+				01A76C242B06EE8000DB2922 /* SwiftUICharts in Frameworks */,
+				01F5C4DA2B040271009296F1 /* SVGKit in Frameworks */,
+				01B9F5882B0171E4007EA85A /* SwiftUIIntrospect in Frameworks */,
+				01F5C4D52B03F42E009296F1 /* SwiftSVG in Frameworks */,
+				01B9F58A2B0171E4007EA85A /* SwiftUIIntrospect-Dynamic in Frameworks */,
+				01B9F58C2B0171E4007EA85A /* SwiftUIIntrospect-Static in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +114,8 @@
 			children = (
 				01B9F55C2B015400007EA85A /* country_assignment_2_3App.swift */,
 				01B9F55E2B015400007EA85A /* ContentView.swift */,
+				01F5C4DF2B047717009296F1 /* SearchBar.swift */,
+				01F5C4DD2B046A2D009296F1 /* FlagImage.swift */,
 				01B9F5602B015402007EA85A /* Assets.xcassets */,
 				01B9F5622B015402007EA85A /* Preview Content */,
 			);
@@ -143,6 +163,15 @@
 			dependencies = (
 			);
 			name = "country-assignment-2-3";
+			packageProductDependencies = (
+				01B9F5872B0171E4007EA85A /* SwiftUIIntrospect */,
+				01B9F5892B0171E4007EA85A /* SwiftUIIntrospect-Dynamic */,
+				01B9F58B2B0171E4007EA85A /* SwiftUIIntrospect-Static */,
+				01F5C4D42B03F42E009296F1 /* SwiftSVG */,
+				01F5C4D92B040271009296F1 /* SVGKit */,
+				01F5C4DB2B040271009296F1 /* SVGKitSwift */,
+				01A76C232B06EE8000DB2922 /* SwiftUICharts */,
+			);
 			productName = "country-assignment-2-3";
 			productReference = 01B9F5592B015400007EA85A /* country-assignment-2-3.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +244,12 @@
 				Base,
 			);
 			mainGroup = 01B9F5502B015400007EA85A;
+			packageReferences = (
+				01B9F5862B0171E4007EA85A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				01F5C4D32B03F42E009296F1 /* XCRemoteSwiftPackageReference "SwiftSVG" */,
+				01F5C4D82B040271009296F1 /* XCRemoteSwiftPackageReference "SVGKit" */,
+				01A76C222B06EE8000DB2922 /* XCRemoteSwiftPackageReference "ChartView" */,
+			);
 			productRefGroup = 01B9F55A2B015400007EA85A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -257,6 +292,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01F5C4DE2B046A2D009296F1 /* FlagImage.swift in Sources */,
+				01F5C4E02B047717009296F1 /* SearchBar.swift in Sources */,
 				01B9F55F2B015400007EA85A /* ContentView.swift in Sources */,
 				01B9F55D2B015400007EA85A /* country_assignment_2_3App.swift in Sources */,
 			);
@@ -588,6 +625,79 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		01A76C222B06EE8000DB2922 /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.5;
+			};
+		};
+		01B9F5862B0171E4007EA85A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.1;
+			};
+		};
+		01F5C4D32B03F42E009296F1 /* XCRemoteSwiftPackageReference "SwiftSVG" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mchoe/SwiftSVG";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		01F5C4D82B040271009296F1 /* XCRemoteSwiftPackageReference "SVGKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVGKit/SVGKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		01A76C232B06EE8000DB2922 /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01A76C222B06EE8000DB2922 /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
+		};
+		01B9F5872B0171E4007EA85A /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01B9F5862B0171E4007EA85A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
+		};
+		01B9F5892B0171E4007EA85A /* SwiftUIIntrospect-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01B9F5862B0171E4007EA85A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = "SwiftUIIntrospect-Dynamic";
+		};
+		01B9F58B2B0171E4007EA85A /* SwiftUIIntrospect-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01B9F5862B0171E4007EA85A /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = "SwiftUIIntrospect-Static";
+		};
+		01F5C4D42B03F42E009296F1 /* SwiftSVG */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01F5C4D32B03F42E009296F1 /* XCRemoteSwiftPackageReference "SwiftSVG" */;
+			productName = SwiftSVG;
+		};
+		01F5C4D92B040271009296F1 /* SVGKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01F5C4D82B040271009296F1 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
+		};
+		01F5C4DB2B040271009296F1 /* SVGKitSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 01F5C4D82B040271009296F1 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKitSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 01B9F5512B015400007EA85A /* Project object */;
 }
