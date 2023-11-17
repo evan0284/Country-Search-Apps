@@ -27,15 +27,13 @@ struct ContentView: View {
     enum SortOption: String, CaseIterable {
         case alphabetical = "Alphabetical"
         case population = "Population"
-        case region = "Region" // New case for sorting by region
-
+        case region = "Region"
     }
 
     var filteredCountries: [Country] {
         var filtered = countries
 
-        
-        if !selectedRegion.isEmpty {
+        if selectedRegion != "Worldwide" && !selectedRegion.isEmpty {
             filtered = filtered.filter { $0.region == selectedRegion }
         }
         // Filter based on search text
@@ -52,10 +50,8 @@ struct ContentView: View {
             break
         }
 
-        
         return filtered
 
-        
     }
     
     
@@ -77,17 +73,21 @@ struct ContentView: View {
                     .padding([.horizontal, .bottom])
                     
                     if selectedSortOption == .region {
+                        let allRegions = Array(Set(countries.map { $0.region }).sorted())
+                        let regionsWithWorldwide = ["Worldwide"] + allRegions
+                        
                         Picker("Select a region", selection: $selectedRegion) {
-                            ForEach(Array(Set(countries.map { $0.region }).sorted()), id: \.self) { region in
+                            ForEach(regionsWithWorldwide, id: \.self) { region in
                                 Text(region).tag(region)
                             }
                         }
                         .pickerStyle(MenuPickerStyle())
                     }
-                    
+
+                        
 
                     List {
-                        
+                    
                         Section(header: Text("Country List")) {
                             ForEach(filteredCountries) { country in
                                 NavigationLink(destination: PostDetailView(country: country, isFavorite: isFavorite(country: country), toggleFavorite: {toggleFavorite2(country: country)})) {
@@ -98,8 +98,8 @@ struct ContentView: View {
                     }
                     
                     .navigationTitle("Country App")
-                    .onAppear {
-                        fetchData()
+                    .task {
+                        await fetchData()
                     }
                 }
             }
@@ -152,56 +152,74 @@ struct ContentView: View {
         let countries: [Country]
 
         var body: some View {
-            VStack {
+            VStack(spacing: 20) {
                 if !countries.isEmpty {
-                    
                     let sortedByPopulation = countries.sorted(by: { $0.population > $1.population })
                     let topFive = Array(sortedByPopulation.prefix(5))
-                    
-                    
-                    
+
                     VStack {
-                        Text("5 Most Populated Country")
-                        Chart{
-                            ForEach(topFive){ country in
+                        Text("5 Most Populated Countries")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        Chart {
+                            ForEach(topFive) { country in
                                 BarMark(x: .value("Type", country.name), y: .value("Population", country.population))
                             }
                         }
                         .aspectRatio(contentMode: .fit)
+                        .frame(width: 300, height: 200)
+
                     }
-                    .padding(20)
-                    
-                    
+                    .padding(16)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(12)
+                    .frame(maxWidth: .infinity)
+
+
                     let continentTop5Countries = Dictionary(grouping: countries, by: { $0.region })
                         .mapValues { $0.count }
                         .sorted(by: { $0.value > $1.value })
                         .prefix(5)
-                    VStack{
+
+                    VStack {
                         Text("Top 5 Continents by Number of Countries")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
                         Chart {
                             ForEach(continentTop5Countries.sorted(by: { $0.key < $1.key }), id: \.key) { region, count in
                                 SectorMark(angle: .value(region, Double(count)),
                                            innerRadius: .ratio(0.3), angularInset: 2)
-                                
-                                .annotation(position: .overlay){
-                                    Text("\(region)")
-                                        .font(.headline)
-                                        .foregroundStyle(.white)
-                                }.cornerRadius(5)
-                                
+                                    .annotation(position: .overlay) {
+                                        Text("\(region)")
+                                            .font(.headline)
+                                            .foregroundColor(.white)
+                                    }
+                                    .cornerRadius(5)
                             }
                         }
                         .aspectRatio(contentMode: .fit)
+                        .frame(width: 300, height: 200)
+
                     }
-                    .padding(10)
-                    
+                    .padding(16)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(12)
+                    .frame(maxWidth: .infinity)
+
                 } else {
                     Text("Loading Data...")
+                        .font(.title)
+                        .foregroundColor(.primary)
                 }
             }
+            .padding()
             .navigationTitle("Charts")
+//            .background(Color.gray.opacity(0.1))
         }
     }
+    
 
     struct CountryRow: View {
         let country: Country
@@ -242,41 +260,86 @@ struct ContentView: View {
 
         
         var body: some View {
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .center, spacing: 16) {
                 
                 SVGBigImageView(svgURL: URL(string: country.flag)!)
-                    .frame(width: 300, height: 200)
+                    .frame(width: 350, height: 200)
+//                    .cornerRadius(12)
+                    .shadow(radius: 1)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text("Capital:")
+                            .font(.headline)
+                        Spacer()
+                        if let capital = country.capital {
+                            Text(capital)
+                        }
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
                     .cornerRadius(12)
-                    .shadow(radius: 4)
 
-                if let capital = country.capital {
-                    Text("Capital: \(capital)")
-                }
-            
+                    HStack {
+                        Text("Languages:")
+                            .font(.headline)
+                        Spacer()
+                        Text(country.languages.joined(separator: ", "))
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(12)
 
-                Text("Languages: \(country.languages.joined(separator: ", "))")
-                Text("Population: \(country.population)")
-                Text("Flag: \(country.flag)")
-                Text("Region: \(country.region)")
-                
-                
-                if let area = country.area {
-                    Text("Area: \(area)")
+                    HStack {
+                        Text("Population:")
+                            .font(.headline)
+                        Spacer()
+                        Text("\(country.population)")
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(12)
+
+                    HStack {
+                        Text("Region:")
+                            .font(.headline)
+                        Spacer()
+                        Text(country.region)
+                    }
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(12)
+
+                    if let area = country.area {
+                        HStack {
+                            Text("Area:")
+                                .font(.headline)
+                            Spacer()
+                            Text("\(area)")
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(12)
+                    }
                 }
-            
+                .padding()
+                .background(Color.white)
+                .cornerRadius(12)
+                .shadow(radius: 1)
+                
                 Button(action: {
                     toggleFavorite()
                 }) {
-                    if isFavorite {
-                        Text("Remove from Favorites")
-                    } else {
-                        Text("Add to Favorites")
-                    }
+                    Text(isFavorite ? "Remove from Favorites" : "Add to Favorites")
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(isFavorite ? Color.red : Color.blue)
+                        .cornerRadius(8)
                 }
-                
-                Spacer()
+
             }
             .padding()
+            .background(Color.gray.opacity(0.1))
             .navigationTitle("\(country.name)")
         }
     }
@@ -302,30 +365,36 @@ struct ContentView: View {
         
     }
         
-    private func fetchData() {
-        //Parse URL
-        
-        guard let url = URL(string: "https://raw.githubusercontent.com/shah0150/data/main/countries_data.json") else { return }
-        
-        
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            if let data = data {
+    private func fetchData() async {
+        guard let url = URL(string: "https://raw.githubusercontent.com/shah0150/data/main/countries_data.json") else {
+            print("Invalid URL")
+            return
+        }
 
-                do {
-                    //Parse JSON
-                    let decodedData = try JSONDecoder().decode([Country].self, from: data)
-                    self.countries = decodedData
-                } catch {
-                            
-                    //Print JSON decoding error
-                    print("Error decoding JSON: \(error)")
-                    
-                }
-            } else if let error = error {
-                //Print API call error
-                print("Error fetching data: \(error.localizedDescription)")
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+
+            do {
+                let decodedData = try JSONDecoder().decode([Country].self, from: data)
+                self.countries = decodedData
+            } catch {
+                print("Error decoding JSON: \(error)")
+ 
             }
-        }.resume()
+        } catch {
+            if let urlError = error as? URLError {
+                switch urlError.code {
+                case .notConnectedToInternet:
+                    print("No internet connection.")
+
+                default:
+                    print("Network error: \(urlError.localizedDescription)")
+        
+                }
+            } else {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
     }
     
     private func toggleFavorite2(country: Country) {
