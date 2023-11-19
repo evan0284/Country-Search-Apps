@@ -8,9 +8,6 @@
 //import SwiftSVG
 import SwiftUI
 import SVGKit
-import Charts
-
-
 
 struct ContentView: View {
     
@@ -22,7 +19,11 @@ struct ContentView: View {
     @State private var selectedRegion: String = ""
     @State private var selectedSortOption: SortOption = .alphabetical
     
+    @State private var isShowingErrorSheet: Bool = false
+    @State private var errorMessage: String = ""
     
+    @State private var isFetchingData: Bool = false
+
 
     enum SortOption: String, CaseIterable {
         case alphabetical = "Alphabetical"
@@ -36,7 +37,6 @@ struct ContentView: View {
         if selectedRegion != "Worldwide" && !selectedRegion.isEmpty {
             filtered = filtered.filter { $0.region == selectedRegion }
         }
-        // Filter based on search text
         if !searchText.isEmpty {
             filtered = filtered.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
@@ -53,10 +53,7 @@ struct ContentView: View {
         return filtered
 
     }
-    
-    
 
-    
     var body: some View {
         TabView {
             NavigationStack {
@@ -84,8 +81,6 @@ struct ContentView: View {
                         .pickerStyle(MenuPickerStyle())
                     }
 
-                        
-
                     List {
                     
                         Section(header: Text("Country List")) {
@@ -98,9 +93,31 @@ struct ContentView: View {
                     }
                     
                     .navigationTitle("Country App")
-                    .task {
-                        await fetchData()
+                    .onAppear {
+                        Task {
+                            do {
+                                try await fetchData()
+                            } catch {
+                                errorMessage = "Failed to fetch data. Please check your internet connection and try again."
+                                isShowingErrorSheet = true
+                            }
+                        }
                     }
+                    .overlay(
+                        Group {
+                            if isFetchingData {
+                                ProgressView("Fetching Data...")
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                    .foregroundColor(.blue)
+                                    .background(Color.white.opacity(0.8))
+                                    .cornerRadius(10)
+                            }
+                        }
+                    )
+                    .sheet(isPresented: $isShowingErrorSheet) {
+                        ErrorSheet(errorMessage: errorMessage, isShowingErrorSheet: $isShowingErrorSheet)
+                    }
+                
                 }
             }
             .tabItem {
@@ -146,226 +163,25 @@ struct ContentView: View {
         }
         
     }
-
-
-    struct ChartsView: View {
-        let countries: [Country]
-
-        var body: some View {
-            VStack(spacing: 20) {
-                if !countries.isEmpty {
-                    let sortedByPopulation = countries.sorted(by: { $0.population > $1.population })
-                    let topFive = Array(sortedByPopulation.prefix(5))
-
-                    VStack {
-                        Text("5 Most Populated Countries")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                        Chart {
-                            ForEach(topFive) { country in
-                                BarMark(x: .value("Type", country.name), y: .value("Population", country.population))
-                            }
-                        }
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 300, height: 200)
-
-                    }
-                    .padding(16)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(12)
-                    .frame(maxWidth: .infinity)
-
-
-                    let continentTop5Countries = Dictionary(grouping: countries, by: { $0.region })
-                        .mapValues { $0.count }
-                        .sorted(by: { $0.value > $1.value })
-                        .prefix(5)
-
-                    VStack {
-                        Text("Top 5 Continents by Number of Countries")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                        Chart {
-                            ForEach(continentTop5Countries.sorted(by: { $0.key < $1.key }), id: \.key) { region, count in
-                                SectorMark(angle: .value(region, Double(count)),
-                                           innerRadius: .ratio(0.3), angularInset: 2)
-                                    .annotation(position: .overlay) {
-                                        Text("\(region)")
-                                            .font(.headline)
-                                            .foregroundColor(.white)
-                                    }
-                                    .cornerRadius(5)
-                            }
-                        }
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 300, height: 200)
-
-                    }
-                    .padding(16)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(12)
-                    .frame(maxWidth: .infinity)
-
-                } else {
-                    Text("Loading Data...")
-                        .font(.title)
-                        .foregroundColor(.primary)
-                }
-            }
-            .padding()
-            .navigationTitle("Charts")
-//            .background(Color.gray.opacity(0.1))
-        }
-    }
     
-
-    struct CountryRow: View {
-        let country: Country
-        let isFavorite: Bool
-        let toggleFavorite: () -> Void
+    struct ErrorSheet: View {
+        let errorMessage: String
+        @Binding var isShowingErrorSheet: Bool
 
         var body: some View {
-            HStack {
-                SVGImageView(svgURL: URL(string: country.flag)!)
-                    .frame(width: 40, height: 30)
-                    .cornerRadius(5)
-                VStack(alignment: .leading) {
-                    Text(country.name).bold().lineLimit(1).font(.title3)
-                    Text(country.region).lineLimit(1).font(.footnote)
-                }
-                
-                Spacer()
-                Button(action: {
-                    toggleFavorite()
-                }) {
-                    Image(systemName: isFavorite ? "star.fill" : "star")
-                        .foregroundColor(isFavorite ? .yellow : .gray)
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    toggleFavorite()
-                }
-                
-            }
-
-        }
-    }
-
-    struct PostDetailView: View {
-        let country: Country
-        let isFavorite: Bool
-        let toggleFavorite: () -> Void
-
-        
-        var body: some View {
-            VStack(alignment: .center, spacing: 16) {
-                
-                SVGBigImageView(svgURL: URL(string: country.flag)!)
-                    .frame(width: 350, height: 200)
-//                    .cornerRadius(12)
-                    .shadow(radius: 1)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Text("Capital:")
-                            .font(.headline)
-                        Spacer()
-                        if let capital = country.capital {
-                            Text(capital)
-                        }
-                    }
+            VStack {
+                Text(errorMessage)
                     .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(12)
-
-                    HStack {
-                        Text("Languages:")
-                            .font(.headline)
-                        Spacer()
-                        Text(country.languages.joined(separator: ", "))
-                    }
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(12)
-
-                    HStack {
-                        Text("Population:")
-                            .font(.headline)
-                        Spacer()
-                        Text("\(country.population)")
-                    }
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(12)
-
-                    HStack {
-                        Text("Region:")
-                            .font(.headline)
-                        Spacer()
-                        Text(country.region)
-                    }
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(12)
-
-                    if let area = country.area {
-                        HStack {
-                            Text("Area:")
-                                .font(.headline)
-                            Spacer()
-                            Text("\(area)")
-                        }
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(12)
-                    }
+                Button("OK") {
+                    isShowingErrorSheet = false
                 }
                 .padding()
-                .background(Color.white)
-                .cornerRadius(12)
-                .shadow(radius: 1)
-                
-                Button(action: {
-                    toggleFavorite()
-                }) {
-                    Text(isFavorite ? "Remove from Favorites" : "Add to Favorites")
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(isFavorite ? Color.red : Color.blue)
-                        .cornerRadius(8)
-                }
-
             }
             .padding()
-            .background(Color.gray.opacity(0.1))
-            .navigationTitle("\(country.name)")
         }
     }
-    
-    
-    
-    
-    //MARK: Model
-    struct Country: Codable, Identifiable {
-
-
-        var id: Int {
-            return self.name.hashValue
-        }
         
-        let name: String
-        let capital: String?
-        let languages: [String]
-        let population: Int
-        let flag: String
-        let region: String
-        let area: Double?
-        
-    }
-        
-    private func fetchData() async {
+    private func fetchData() async throws {
         guard let url = URL(string: "https://raw.githubusercontent.com/shah0150/data/main/countries_data.json") else {
             print("Invalid URL")
             return
@@ -379,20 +195,20 @@ struct ContentView: View {
                 self.countries = decodedData
             } catch {
                 print("Error decoding JSON: \(error)")
- 
+                throw error
             }
         } catch {
             if let urlError = error as? URLError {
                 switch urlError.code {
                 case .notConnectedToInternet:
                     print("No internet connection.")
-
                 default:
                     print("Network error: \(urlError.localizedDescription)")
-        
+                    throw error
                 }
             } else {
                 print("Error: \(error.localizedDescription)")
+                throw error
             }
         }
     }
