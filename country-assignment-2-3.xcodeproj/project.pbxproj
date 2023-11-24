@@ -26,7 +26,6 @@
 		01F5C4DA2B040271009296F1 /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = 01F5C4D92B040271009296F1 /* SVGKit */; };
 		01F5C4DC2B040271009296F1 /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 01F5C4DB2B040271009296F1 /* SVGKitSwift */; };
 		01F5C4DE2B046A2D009296F1 /* FlagImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F5C4DD2B046A2D009296F1 /* FlagImage.swift */; };
-		01F5C4E02B047717009296F1 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F5C4DF2B047717009296F1 /* SearchBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +61,6 @@
 		01B9F5772B015402007EA85A /* country_assignment_2_3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = country_assignment_2_3UITests.swift; sourceTree = "<group>"; };
 		01B9F5792B015402007EA85A /* country_assignment_2_3UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = country_assignment_2_3UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		01F5C4DD2B046A2D009296F1 /* FlagImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagImage.swift; sourceTree = "<group>"; };
-		01F5C4DF2B047717009296F1 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +120,6 @@
 			children = (
 				01B9F55C2B015400007EA85A /* country_assignment_2_3App.swift */,
 				01B9F55E2B015400007EA85A /* ContentView.swift */,
-				01F5C4DF2B047717009296F1 /* SearchBarView.swift */,
 				01F5C4DD2B046A2D009296F1 /* FlagImage.swift */,
 				01B9F5602B015402007EA85A /* Assets.xcassets */,
 				01B9F5622B015402007EA85A /* Preview Content */,
@@ -308,7 +305,6 @@
 				01F5C4DE2B046A2D009296F1 /* FlagImage.swift in Sources */,
 				01420CAE2B09881200195FDE /* PostDetailView.swift in Sources */,
 				01420CB02B098D8800195FDE /* CountryModel.swift in Sources */,
-				01F5C4E02B047717009296F1 /* SearchBarView.swift in Sources */,
 				01B9F55F2B015400007EA85A /* ContentView.swift in Sources */,
 				01B9F55D2B015400007EA85A /* country_assignment_2_3App.swift in Sources */,
 				01420CB42B098E5000195FDE /* CountryRow.swift in Sources */,

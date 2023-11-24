@@ -30,6 +30,7 @@ struct ContentView: View {
         case population = "Population"
         case region = "Region"
     }
+    
 
     var filteredCountries: [Country] {
         var filtered = countries
@@ -37,6 +38,7 @@ struct ContentView: View {
         if selectedRegion != "Worldwide" && !selectedRegion.isEmpty {
             filtered = filtered.filter { $0.region == selectedRegion }
         }
+        
         if !searchText.isEmpty {
             filtered = filtered.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
@@ -58,9 +60,7 @@ struct ContentView: View {
         TabView {
             NavigationStack {
                 VStack {
-                    SearchBar(text: $searchText)
-                        .padding([.horizontal])
-                    
+
                     Picker("Sort by", selection: $selectedSortOption) {
                         ForEach(SortOption.allCases, id: \.self) { option in
                             Text(option.rawValue)
@@ -119,6 +119,7 @@ struct ContentView: View {
                     }
                 
                 }
+                .searchable(text: $searchText)
             }
             .tabItem {
                 VStack {
@@ -163,6 +164,15 @@ struct ContentView: View {
         }
         
     }
+    
+    var searchResults: [Country] {
+        if searchText.isEmpty {
+            return countries
+        } else {
+            return countries.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
+    }
+
     
     struct ErrorSheet: View {
         let errorMessage: String
