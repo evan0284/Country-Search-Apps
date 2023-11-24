@@ -164,14 +164,6 @@ struct ContentView: View {
         }
         
     }
-    
-    var searchResults: [Country] {
-        if searchText.isEmpty {
-            return countries
-        } else {
-            return countries.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-        }
-    }
 
     
     struct ErrorSheet: View {
